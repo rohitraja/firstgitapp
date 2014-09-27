@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 public class TimeService {
 
     @GET
+    @Path("/test")
     public Time get() {
         return new Time();
     }
