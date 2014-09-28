@@ -15,6 +15,13 @@
             <artifactId>jetty-servlet</artifactId>
             <version>7.6.0.v20120127</version>
         </dependency>
+        
+        <!-- postgresql -->
+         <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.0-801.jdbc4</version>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
