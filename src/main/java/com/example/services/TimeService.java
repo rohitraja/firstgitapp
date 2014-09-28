@@ -1,5 +1,7 @@
 package com.example.services;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,32 +31,25 @@ public class TimeService {
     @Path("/createconnection")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConnectionDto createconnection(ConnectionDto conDto)
+    public ConnectionDto createconnection(ConnectionDto conDto) throws URISyntaxException,SQLException
     {
-    	Connection con;
-    	Statement stmt;
-	    try {
-			String url = 
-			       "jdbc:postgresql://reddwarf.cs.rit.edu/rkr";
-			    // DATABASE CONNECTION MAGIC :-)
-			    Class.forName("org.postgresql.Driver");
-			    con = DriverManager.getConnection(url, conDto.getUserName(), conDto.getPwd());
-			    stmt = con.createStatement();
-				conDto.setResponce("Successfully Connection created");
-
-			    
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			conDto.setResponce("Class no found Exception :"+e.toString());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			conDto.setResponce("SQLException e :"+e.toString());
-
-		}
     	
-    	return conDto;
+        try {
+			URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+			String username = dbUri.getUserInfo().split(":")[0];
+			String password = dbUri.getUserInfo().split(":")[1];
+			String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
+
+			 DriverManager.getConnection(dbUrl, username, password);
+				conDto.setResponce("Connection created Successfully");
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conDto.setResponce("Connection Error: "+ e.toString());
+		}
+         return conDto;
     }
 }
 
