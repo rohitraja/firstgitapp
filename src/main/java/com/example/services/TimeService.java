@@ -64,7 +64,7 @@ public class TimeService {
          return conDto;
     }
     
-    @GET
+    @POST
     @Path("/createrow")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
