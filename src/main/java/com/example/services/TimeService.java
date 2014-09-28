@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -68,9 +69,10 @@ public class TimeService {
     @Path("/createrow")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConnectionDto insertRow() throws URISyntaxException, SQLException
+    public EmpDto insertRow() throws URISyntaxException, SQLException
     {
     	ConnectionDto condto = new ConnectionDto();
+    	EmpDto empdto = new EmpDto();
 		try {
 			URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
@@ -81,7 +83,14 @@ public class TimeService {
 			Connection con;
 			con = DriverManager.getConnection(dbUrl, username, password);
 			Statement stat = con.createStatement();
-			stat.executeUpdate("insert into employees values('ramesh','raju','Manager')");
+//			stat.executeUpdate("insert into employees (employee_id,last_name, first_name, title) values (4,'ramesh','raju','Manager')"); // this query has error not working 
+			ResultSet rst = stat.executeQuery("select * from employees");
+			while (rst.next()) {
+				empdto.setFirst_name(rst.getString("first_name"));
+				empdto.setLast_name(rst.getString("last_name"));
+				
+			}
+
 			condto.setResponce("query exceucted");
 			
 		} catch (Exception e) {
@@ -89,7 +98,7 @@ public class TimeService {
 			e.printStackTrace();
 			condto.setResponce("Error Occured : "+e.toString());
 		}
-    	return condto;
+    	return empdto;
     }
 }
 
