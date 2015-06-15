@@ -37,7 +37,8 @@ public class TimeService {
     {
     	
     	/*
-    	 * taken help from https://github.com/heroku/devcenter-java-database refer for more information
+    	 * taken help from 	1. https://github.com/heroku/devcenter-java-database refer for more information
+    	 * 					2. http://www.cs.rit.edu/~rkr/doc/postgresql/Crud.java
     	 */
     	
         try {
